@@ -218,104 +218,105 @@ def m(s):
         move(word)
 
 #performs a move by setting up, performing U moves, and undoing the setup
+# This is what we can call to choose what move we need to proform
 def move(mv):
     mv = str.lower(mv)
     if mv == "u":
         U()
     elif mv == "u2":
-        move("U"); move("U");
+        move("U"); move("U")
     elif mv == "ui":
-        move("U"); move("U"); move("U");
+        move("U"); move("U"); move("U")
     elif mv == "f":
-        setup("F"); U(); undo("F");
+        setup("F"); U(); undo("F")
     elif mv == "f2":
-        move("F"); move("F");
+        move("F"); move("F")
     elif mv == "fi":
-        move("F"); move("F"); move("F");
+        move("F"); move("F"); move("F")
     elif mv == "r":
-        setup("R"); U(); undo("R");
+        setup("R"); U(); undo("R")
     elif mv == "r2":
-        move("R"); move("R");
+        move("R"); move("R")
     elif mv == "ri":
-        move("R"); move("R"); move("R");
+        move("R"); move("R"); move("R")
     elif mv == "l":
-        setup("L"); U(); undo("L");
+        setup("L"); U(); undo("L")
     elif mv == "l2":
-        move("L"); move("L");
+        move("L"); move("L")
     elif mv == "li":
-        move("L"); move("L"); move("L");
+        move("L"); move("L"); move("L")
     elif mv == "b":
-        setup("B"); U(); undo("B");
+        setup("B"); U(); undo("B")
     elif mv == "b2":
-        move("B"); move("B");
+        move("B"); move("B")
     elif mv == "bi":
-        move("B"); move("B"); move("B");
+        move("B"); move("B"); move("B")
     elif mv == "d":
-        setup("D"); U(); undo("D");
+        setup("D"); U(); undo("D")
     elif mv == "d2":
-        move("D"); move("D");
+        move("D"); move("D")
     elif mv == "di":
-        move("D"); move("D"); move("D");
+        move("D"); move("D"); move("D")
     elif mv == "x":
         rotate("X")
     elif mv == "x2":
-        move("X"); move("X");
+        move("X"); move("X")
     elif mv == "xi":
-        move("X"); move("X"); move("X");
+        move("X"); move("X"); move("X")
     elif mv == "y":
         rotate("Y")
     elif mv == "y2":
-        move("Y"); move("Y");
+        move("Y"); move("Y")
     elif mv == "yi":
-        move("Y"); move("Y"); move("Y");
+        move("Y"); move("Y"); move("Y")
     elif mv == "z":
         rotate("Z")
     elif mv == "z2":
-        move("Z"); move("Z");
+        move("Z"); move("Z")
     elif mv == "zi":
-        move("Z"); move("Z"); move("Z");
+        move("Z"); move("Z"); move("Z")
     elif mv == "uw":
-        move("D"); move("Y");
+        move("D"); move("Y")
     elif mv == "uw2":
-        move("UW"); move("UW");
+        move("UW"); move("UW")
     elif mv == "uwi":
-        move("UW"); move("UW"); move("UW");
+        move("UW"); move("UW"); move("UW")
     elif mv == "m":
-        move("Li"); move("R"); move("Xi");
+        move("Li"); move("R"); move("Xi")
     elif mv == "mi":
-        move("M"); move("M"); move("M");
+        move("M"); move("M"); move("M")
     elif mv == "m2":
-        move("M"); move("M");
+        move("M"); move("M")
     elif mv == "rw":
-        move("L"); move("X");
+        move("L"); move("X")
     elif mv == "rwi":
-        move("RW"); move("RW"); move("RW");
+        move("RW"); move("RW"); move("RW")
     elif mv == "rw2":
-        move("RW"); move("RW");
+        move("RW"); move("RW")
     elif mv == "fw":
-        move("Bi"); move("Z");
+        move("Bi"); move("Z")
     elif mv == "fwi":
-        move("FW"); move("FW"); move("FW");
+        move("FW"); move("FW"); move("FW")
     elif mv == "fw2":
-        move("FW"); move("FW");
+        move("FW"); move("FW")
     elif mv == "lw":
-        move("R"); move("Xi");
+        move("R"); move("Xi")
     elif mv == "lwi":
-        move("LW"); move("LW"); move("LW");
+        move("LW"); move("LW"); move("LW")
     elif mv == "lw2":
-        move("LW"); move("LW");
+        move("LW"); move("LW")
     elif mv == "bw":
-        move("F"); move("Zi");
+        move("F"); move("Zi")
     elif mv == "bwi":
-        move("BW"); move("BW"); move("BW");
+        move("BW"); move("BW"); move("BW")
     elif mv == "bw2":
-        move("BW"); move("BW");
+        move("BW"); move("BW")
     elif mv == "dw":
-        move("U"); move("Yi");
+        move("U"); move("Yi")
     elif mv == "dwi":
-        move("DW"); move("DW"); move("DW");
+        move("DW"); move("DW"); move("DW")
     elif mv == "dw2":
-        move("DW"); move("DW");
+        move("DW"); move("DW")
     else:
         raise Exception("Invalid Move: " + str(mv))
 
@@ -349,8 +350,8 @@ def rotate(axis):
         a[3] = a[4]
         a[4] = a[2]
         a[2] = temp
-        rotate_face_clockwise("L"); rotate_face_clockwise("L");
-        rotate_face_clockwise("D"); rotate_face_clockwise("D");
+        rotate_face_clockwise("L"); rotate_face_clockwise("L")
+        rotate_face_clockwise("D"); rotate_face_clockwise("D")
         rotate_face_clockwise("F")
         rotate_face_counterclockwise("B")
     else:
@@ -1325,9 +1326,9 @@ def simulation(simNum):
     return [best, BestNumber, bestScram, worst, WorstNumber, worstScram]
    
 
-    
+############################################################# GUI #########################################################################
 ######################################################################################################
-#Below is all the work for the GUI portion of the Cube Solver
+#Below is all the work for the GUI portion of the Cube Solver     
 ######################################################################################################
 #These are all the globals used for the GUI
 root = None
