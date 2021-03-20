@@ -268,7 +268,7 @@ def move(mv):
     elif mv == "y2":
         move("Y"); move("Y")
     elif mv == "yi":
-        move("Y"); move("Y"); move("Y")
+        move("Y"); move("Y"); move("Y")  #this is like a reverse y but is never used (basicly a y3) we'll say this as one move. You can use this but to solve the cube it doesnt use it
     elif mv == "z":
         rotate("Z")
     elif mv == "z2":
@@ -424,7 +424,7 @@ def rotate_face_clockwise(face):
     a[f_id][1][2] = temp
 
 #Randomly scrambles the cube given a number of moves, or given a list of moves
-def scramble(moves=25):
+def scramble(moves=25):     # we can change this to whatever we want but it dosent seem to work
     global last_scramble, moves_list, solution_length, a
     a = make_cube()
     if hasattr(moves, '__iter__'): #scramble given a list of moves
@@ -437,12 +437,13 @@ def scramble(moves=25):
         moves_list = [] #reset moves_list
         last_scramble = [] #reset last scramble
         prevMove = ""
+        i=0
         for i in range(moves):
             while True:
                 thisMove = ""
                 r = randint(0, 5)
                 if r == 0:
-                    thisMove += "U"
+                    thisMove += "U"   # If there is say a U2 it would move U two times but only count as 1 move
                 elif r == 1:
                     thisMove += "F"
                 elif r == 2:
@@ -453,7 +454,7 @@ def scramble(moves=25):
                     thisMove += "D"
                 elif r == 5:
                     thisMove += "B"
-                if thisMove == "U" and prevMove != "U" and prevMove != "D":
+                if thisMove == "U" and prevMove != "U" and prevMove != "D": # this makes sure that while we scramble we wont unscramble
                     break
                 if thisMove == "F" and prevMove != "F" and prevMove != "B":
                     break
