@@ -1277,10 +1277,10 @@ def isSolved():
     return uside and fside and rside and lside and dside and bside
 
 # ANDRES, BRADY, TIANNA CODE GOES HERE
-def BFS():
+def DFS():
     assert(isSolved())
 
-def solveOneStepWithBFS():
+def solveOneStepWithDFS():
     BFS()
     assert(isSolved())
 
