@@ -426,7 +426,7 @@ def rotate_face_clockwise(face):
     a[f_id][1][2] = temp
 
 #Randomly scrambles the cube given a number of moves, or given a list of moves
-def scramble(moves=25):     # we can change this to whatever we want but it dosent seem to work
+def scramble(moves):     # we can change this to whatever we want but it dosent seem to work
     global last_scramble, moves_list, solution_length, a
     a = make_cube()
     if hasattr(moves, '__iter__'): #scramble given a list of moves
@@ -1278,7 +1278,19 @@ def isSolved():
     bside = a[5][0][0] == a[5][0][1] == a[5][0][2] == a[5][1][0] == a[5][1][1] == a[5][1][2] == a[5][2][0] == a[5][2][1] == a[5][2][2]
     return uside and fside and rside and lside and dside and bside
 
+# ANDRES, BRADY, TIANNA CODE GOES HERE
+def DFS():
+    assert(isSolved())
+
+def solveOneStepWithDFS():
+    BFS()
+    assert(isSolved())
+
 def solve():
+    '''
+
+    ORIGINAL SOLVE CODE
+    '''
     cross()
     simplify_moves()
     step_moves_list[0] = solution_length
@@ -1294,6 +1306,9 @@ def solve():
     simplify_moves()
     step_moves_list[3] = solution_length - step_moves_list[2] - step_moves_list[1] - step_moves_list[0]
     assert(isSolved())
+
+    
+
 
 #Performs solve simulations, will return a list with the number of moves, which one was the best
 # and the scramble used to get the best. The worst, which one was the worst, and the scramble
@@ -1504,7 +1519,8 @@ def GUImakeMove(move):
 #GUIScramble will do a scramble of 25 on the cube, then update the canvas with the new cube
 def GUIScramble():
     global ScrambleLabel, canvas
-    scramble(25)
+    #scramble(25)
+    scramble(1)
     ScrambleLabel.configure(text=get_scramble())
     canvas.delete(ALL)
     drawCube()
