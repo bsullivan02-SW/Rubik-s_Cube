@@ -2,6 +2,8 @@ from random import randint
 import tkinter as tk
 import copy, webbrowser, os
 from tkinter import *
+import util
+
 
 #This is the Cube Solver
 #This version contains a GUI
