@@ -1339,6 +1339,19 @@ def isSolved():
     return uside and fside and rside and lside and dside and bside
 
 # ANDRES, BRADY, TIANNA CODE GOES HERE
+
+
+'''
+
+NEXT STEP:
+Make Tianna's BFS code and graphSearch code work with my idea of a rubrik's cube state representation.
+For example, problem isn't defined in this repository. I think if we just copy the problem class
+over to this repository and incorporate my state representation we might be able to straight up make this work.
+
+'''
+
+
+
 def graphSearch(frontier, problem):
     explored = set() #Initialize explored to be empty
     while(not frontier.isEmpty()): #While the frontier is not empty
