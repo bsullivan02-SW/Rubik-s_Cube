@@ -1339,8 +1339,26 @@ def isSolved():
     return uside and fside and rside and lside and dside and bside
 
 # ANDRES, BRADY, TIANNA CODE GOES HERE
-def generalBFS():
-    assert(isSolved())
+def graphSearch(frontier, problem):
+    explored = set() #Initialize explored to be empty
+    while(not frontier.isEmpty()): #While the frontier is not empty
+        (leafOrGoal, actions, cost) = frontier.pop() #Remove a leaf node from the frontier
+        if leafOrGoal not in explored:
+            if(problem.isGoalState(leafOrGoal)): #If the leaf node contains a goal state
+                explored.add(leafOrGoal) #add the goal state onto explored
+                return actions #Return the solution
+            else: #The leaf node is not a goal state 
+                explored.add(leafOrGoal) #add the leaf node onto explored
+                successors = problem.getSuccessors(leafOrGoal) # get successors
+                for (state, action, costOfAction) in successors :
+                    frontier.push((state, actions + [action], cost + costOfAction))
+                   
+    return print('Failure!') #If the frontier is empty return failure
+
+def generalBFS():    
+    frontier = util.Queue()
+    frontier.push((problem.getStartState(),[], 0))
+    return graphSearch(frontier, problem)
 
 def solveOneStepWithBFS(desiredState):
     BFS()
