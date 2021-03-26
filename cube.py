@@ -59,6 +59,66 @@ def print_cube():
     print('\t\t'+str(a[1][0])+'\n\t\t'+str(a[1][1])+'\n\t\t'+str(a[1][2]))
     print('\t\t'+str(a[4][0])+'\n\t\t'+str(a[4][1])+'\n\t\t'+str(a[4][2]))
 
+'''
+THIS IS OUR GROUP'S CODE
+'''
+class State:
+    def __innit__(self, UF, FF, RF, LF, DF, BF):
+        self.UF = UF
+        self.FF = FF
+        self.RF = RF
+        self.LF = LF
+        self.DF = DF
+        self.BF = BF
+
+    def isEqual(currentState)
+        
+        '''
+        return (currentState.UF == self.UF and
+            currentState.FF == self.FF and
+            currentState.RF == self.RF and
+            currentState.LF == self.LF and
+            currentState.DF == self.DF and
+            currentState.BF == self.BF)
+        '''
+
+        isEqual = False
+        for currentRow in self.UF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.FF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+        
+        for currentRow in self.RF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.LF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.DF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.BF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+        
+        return True
+            
+
+
+
+
 #simplifies the list of moves and returns a string representation of the moves
 def get_moves():
     simplify_moves()
@@ -1279,12 +1339,15 @@ def isSolved():
     return uside and fside and rside and lside and dside and bside
 
 # ANDRES, BRADY, TIANNA CODE GOES HERE
-def DFS():
+def generalBFS():
     assert(isSolved())
 
-def solveOneStepWithDFS():
+def solveOneStepWithBFS(desiredState):
     BFS()
-    assert(isSolved())
+
+    currenState = State(U,F,L,R,B,D)
+
+    assert(currenState.isEqual(desiredState))
 
 def solve():
     '''
