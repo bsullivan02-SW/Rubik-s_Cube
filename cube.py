@@ -71,7 +71,7 @@ class State:
         self.DF = DF
         self.BF = BF
 
-    def isEqual(currentState)
+    def isEqual(currentState):
         
         '''
         return (currentState.UF == self.UF and
