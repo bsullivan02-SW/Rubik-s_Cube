@@ -1468,7 +1468,7 @@ def solve():
     '''
     HOPEFULLY OUR FINAL GOAL
 
-    solveOneStepWithBFS(desiredState)
+    solveOneStepWithBFS(desiredState)   
     simplify_moves()
     step_moves_list[0] = solution_length
 
