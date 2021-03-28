@@ -49,6 +49,7 @@ def make_cube():
                 ['B', 'B', 'B']]] #back/blue
 
 a = make_cube()
+print ("make cube" , a )
 
 #prints a string representation of the cube to the interpreter
 def print_cube():
@@ -71,7 +72,7 @@ class State:
         self.DF = DF
         self.BF = BF
 
-    def isEqual(currentState)
+    def isEqual(self, currentState):
         
         '''
         return (currentState.UF == self.UF and
@@ -252,6 +253,7 @@ def setup(face):
         move("Xi")
     else:
         raise Exception("Invalid setup; face: " + face)
+    
 
 #performs the inverse of setup to restore the cube's previous orientation
 def undo(face):
@@ -419,7 +421,7 @@ def rotate(axis):
     else:
         raise Exception("Invalid rotation: " + axis)
 
-#performs a U move
+#performs a U move  a U move is  ##########################
 def U():
     #rotate U face
     temp = a[0][0][0]
@@ -474,7 +476,10 @@ def rotate_face_clockwise(face):
         f_id = 5
     else:
         raise Exception("Invalid face: " + face)
-    temp = a[f_id][0][0]
+
+
+     ########################## this is changing th cube ##############
+    temp = a[f_id][0][0] 
     a[f_id][0][0] = a[f_id][2][0]
     a[f_id][2][0] = a[f_id][2][2]
     a[f_id][2][2] = a[f_id][0][2]
@@ -1249,7 +1254,7 @@ def bOLL():
         if a[1][0][0] == a[0][1][1]:
             antisune()
         elif a[5][2][0] == a[0][1][1]:
-            m("U2"); sune();
+            m("U2"); sune()
         else:
             raise Exception("Something went wrong")
     else:
@@ -1351,14 +1356,16 @@ class SearchProblem:
         """
         Returns the start state for the search problem.
         """
-        util.raiseNotDefined()
+        cubeState = a
+        return cubeState
 
     def isGoalState(self, state):
         """
           state: Search state
         Returns True if and only if the state is a valid goal state.
         """
-        util.raiseNotDefined()
+        goalstate = make_cube()
+        return goalstate
 
     def getSuccessors(self, state):
         """
@@ -1368,7 +1375,16 @@ class SearchProblem:
         state, 'action' is the action required to get there, and 'stepCost' is
         the incremental cost of expanding to that successor.
         """
-        util.raiseNotDefined()
+        successors = []
+        
+        for move in moves_list:
+            #succState = state after the move is applied to the move 
+            successors.append(succState)
+        return successors #return a list of successsors (states)
+    
+    def getMove(self, successors):
+        for state in successors:
+            if state = 
 
 '''
 
