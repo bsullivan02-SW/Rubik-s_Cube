@@ -268,7 +268,7 @@ def undo(face):
         move("X")
     else:
         raise Exception("Invalid undo; face: " + face)
-
+#:)
 #Tokenizes a string of moves 	
 def m(s):
     s = str.replace(s, "'", "i")
