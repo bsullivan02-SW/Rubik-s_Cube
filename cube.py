@@ -1351,14 +1351,18 @@ class SearchProblem:
         """
         Returns the start state for the search problem.
         """
-        util.raiseNotDefined()
+        
+        currentCube = a
+
+        return currentCube
 
     def isGoalState(self, state):
         """
           state: Search state
         Returns True if and only if the state is a valid goal state.
         """
-        util.raiseNotDefined()
+        goalState = make_cube()
+        return goalState
 
     def getSuccessors(self, state):
         """
@@ -1401,9 +1405,11 @@ def generalBFS():
     return graphSearch(frontier, problem)
 
 def solveOneStepWithBFS(desiredState):
-    BFS()
 
-    currenState = State(U,F,L,R,B,D)
+
+    currenState = self.getStartState()
+
+    generalBFS()
 
     assert(currenState.isEqual(desiredState))
 
@@ -1411,6 +1417,7 @@ def solve():
     '''
 
     ORIGINAL SOLVE CODE
+    '''
     '''
     cross()
     simplify_moves()
@@ -1426,6 +1433,37 @@ def solve():
     bPLL()
     simplify_moves()
     step_moves_list[3] = solution_length - step_moves_list[2] - step_moves_list[1] - step_moves_list[0]
+    assert(isSolved())
+    '''
+
+    '''
+    HOPEFULLY OUR FINAL GOAL
+
+    solveOneStepWithBFS(desiredState)
+    simplify_moves()
+    step_moves_list[0] = solution_length
+
+    solveOneStepWithBFS(desiredState)
+    simplify_moves()
+    step_moves_list[1] = solution_length - step_moves_list[0]
+
+    solveOneStepWithBFS(desiredState)
+    simplify_moves()
+    step_moves_list[2] = solution_length - step_moves_list[1] - step_moves_list[0]
+
+    solveOneStepWithBFS(desiredState)
+    simplify_moves()
+    step_moves_list[3] = solution_length - step_moves_list[2] - step_moves_list[1] - step_moves_list[0]
+
+    assert(isSolved())
+
+    '''
+    desiredState = make_cube()
+
+    solveOneStepWithBFS(desiredState)
+    simplify_moves()
+    step_moves_list[0] = solution_length
+
     assert(isSolved())
 
     
