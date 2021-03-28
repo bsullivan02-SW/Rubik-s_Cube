@@ -13,6 +13,7 @@ import util
 
 #globals
 moves_list = []
+list_of_leagal_moves[]
 last_scramble = []
 f2l_list = []
 step_moves_list = []
@@ -299,7 +300,7 @@ def move(mv):
         move("F"); move("F"); move("F")
     elif mv == "r":
         setup("R"); U(); undo("R")
-    elif mv == "r2":
+    elif mv == "r":
         move("R"); move("R")
     elif mv == "ri":
         move("R"); move("R"); move("R")
@@ -1366,8 +1367,11 @@ class SearchProblem:
           state: Search state
         Returns True if and only if the state is a valid goal state.
         """
+        isgState = False
         goalState = make_cube()
-        return goalState
+        if state == goalState:
+            isgState = True
+        return isgState
 
     def getSuccessors(self, state):
         """
@@ -1384,9 +1388,19 @@ class SearchProblem:
             successors.append(succState)
         return successors #return a list of successsors (states)
     
-    def getMove(self, successors):
-        for state in successors:
-            if state = 
+
+    # this if for only one move
+    def getMove(self, state):
+        themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
+        bestMove = ""
+        for mv in move_list[]
+            succState =  move(mv) # state after the move is applied to the move
+            if self.isGoalState(succState): # true (succState is the goal state)
+                bestMove = mv # this is the move that got us to the goal state
+                break
+        return bestMove
+
+
 
 '''
 
@@ -1417,15 +1431,16 @@ def generalBFS():
     frontier = util.Queue()
     frontier.push((problem.getStartState(),[], 0))
     return graphSearch(frontier, problem)
+# this is only for one move scrambels
+def solveOneStepWithBFS(self):
 
-def solveOneStepWithBFS(desiredState):
-
-
+    
     currenState = self.getStartState()
+    move = self.get_move(currenState)
+    stateMovedTo = currenState.move(move)
 
-    generalBFS()
-
-    assert(currenState.isEqual(desiredState))
+    if (self.isGoalState(stateMovedTo)):
+        print ("DONE!")
 
 def solve():
     '''
