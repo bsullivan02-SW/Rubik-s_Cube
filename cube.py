@@ -13,7 +13,7 @@ import util
 
 #globals
 moves_list = []
-list_of_leagal_moves[]
+#list_of_leagal_moves[]
 last_scramble = []
 f2l_list = []
 step_moves_list = []
@@ -76,13 +76,19 @@ class State:
     def isEqual(self, currentState):
         
         '''
-        return (currentState.UF == self.UF and
-            currentState.FF == self.FF and
-            currentState.RF == self.RF and
-            currentState.LF == self.LF and
-            currentState.DF == self.DF and
-            currentState.BF == self.BF)
+        What we need to do is set up both cubes using the "setup" function to face the same way. Then we can check face
+        equality without worrying about 6x the number of possible states. Afterwards, we can undo the setup, exactly the way he deals
+        with making moves. What I'm wondering now is we can only call setup() on the cube a. There is no parameter to specifiy "which cube".
+        Furthermore, the "currentState" we pass here is not a cube, just a "State". We have to find some way to face them both the same way:
+        1. Can make a match the orientation of currentState (how do we find that?)
+        2. Can copy a into a temp cube, transfer currentState into a and deal with all the setup exclusively in a
+           (I don't think there's even a way to transfer or manually specify what a cube is)
+        3. We'll probably have to edit either our code or his for this. Maybe we can make our currentState a cube and make his code
+           specify which cube to setup.
+        I feel like the easiest thing to do would be to setup a to face the same way as currentState, but how do we find that?
         '''
+
+        setup("l")
 
         isEqual = False
         for currentRow in self.UF:
@@ -1393,7 +1399,7 @@ class SearchProblem:
     def getMove(self, state):
         themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
         bestMove = ""
-        for mv in move_list[]
+        for mv in moves_list:
             succState =  move(mv) # state after the move is applied to the move
             if self.isGoalState(succState): # true (succState is the goal state)
                 bestMove = mv # this is the move that got us to the goal state
