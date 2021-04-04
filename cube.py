@@ -1352,59 +1352,68 @@ def isSolved():
 
 # ANDRES, BRADY, TIANNA CODE GOES HERE
 
-class SearchProblem:
+
+#class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
     any of the methods (in object-oriented terminology: an abstract class).
     You do not need to change anything in this class, ever.
     """
 
-    def getStartState(self):
-        """
-        Returns the start state for the search problem.
-        """
-        
-        currentCube = a
-
-        return currentCube
-
-    def isGoalState(self, state):
-        """
-          state: Search state
-        Returns True if and only if the state is a valid goal state.
-        """
-        isgState = False
-        goalState = make_cube()
-        if state == goalState:
-            isgState = True
-        return isgState
-
-    def getSuccessors(self, state):
-        """
-          state: Search state
-        For a given state, this should return a list of triples, (successor,
-        action, stepCost), where 'successor' is a successor to the current
-        state, 'action' is the action required to get there, and 'stepCost' is
-        the incremental cost of expanding to that successor.
-        """
-        successors = []
-        
-        for move in moves_list:
-            #succState = state after the move is applied to the move 
-            successors.append(succState)
-        return successors #return a list of successsors (states)
+def getStartState(self):
+    """
+    Returns the start state for the search problem.
+    """
     
+    currentCube = a
 
-    # this if for only one move
-    def getMove(self, state):
-        themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
-        bestMove = ""
-        for mv in moves_list:
-            succState =  move(mv) # state after the move is applied to the move
-            if self.isGoalState(succState): # true (succState is the goal state)
-                bestMove = mv # this is the move that got us to the goal state
-                break
-        return bestMove
+    return currentCube
+
+def isGoalState(self, state):
+    """
+        state: Search state
+    Returns True if and only if the state is a valid goal state.
+    """
+    isgState = False
+    goalState = make_cube()
+    if state == goalState:
+        isgState = True
+    return isgState
+
+def getSuccessors(self, state):
+
+    '''
+    4/3/2021 7:32 PM: latest session (Tianna/Andres)
+    If we get this to work with the code we may be able to get it to solve. Hopefully.
+    '''
+
+    """
+        state: Search state
+    For a given state, this should return a list of triples, (successor,
+    action, stepCost), where 'successor' is a successor to the current
+    state, 'action' is the action required to get there, and 'stepCost' is
+    the incremental cost of expanding to that successor.
+    """
+    successors = []
+    
+    for move in moves_list:
+        #succState = state after the move is applied to the move 
+        successors.append(succState)
+    return successors #return a list of successsors (states)
+
+
+# this if for only one move
+def getMove(self, state):
+    themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
+    bestMove = ""
+    for mv in moves_list:
+        succState =  move(mv) # state after the move is applied to the move
+        if self.isGoalState(succState): # true (succState is the goal state)
+            bestMove = mv # this is the move that got us to the goal state
+            break
+    return bestMove
+
+
 
 
 
@@ -1420,24 +1429,26 @@ over to this repository and incorporate my state representation we might be able
 def graphSearch(frontier, problem):
     explored = set() #Initialize explored to be empty
     while(not frontier.isEmpty()): #While the frontier is not empty
-        (leafOrGoal, actions, cost) = frontier.pop() #Remove a leaf node from the frontier
-        if leafOrGoal not in explored:
-            if(problem.isGoalState(leafOrGoal)): #If the leaf node contains a goal state
-                explored.add(leafOrGoal) #add the goal state onto explored
+        (nextNode, actions, cost) = frontier.pop() #Remove a leaf node from the frontier
+        if nextNode not in explored:
+            if(problem.isGoalState(nextNode)): #If the leaf node contains a goal state
+                explored.add(nextNode) #add the goal state onto explored
                 return actions #Return the solution
             else: #The leaf node is not a goal state 
-                explored.add(leafOrGoal) #add the leaf node onto explored
-                successors = problem.getSuccessors(leafOrGoal) # get successors
+                explored.add(nextNode) #add the leaf node onto explored
+                successors = problem.getSuccessors(nextNode) # get successors
                 for (state, action, costOfAction) in successors :
                     frontier.push((state, actions + [action], cost + costOfAction))
                    
     return print('Failure!') #If the frontier is empty return failure
 
-def generalBFS():    
+def BFS(problem):    
     frontier = util.Queue()
-    frontier.push((problem.getStartState(),[], 0))
+    frontier.push((problem.getStartState(), moves_list, 0))
     return graphSearch(frontier, problem)
 # this is only for one move scrambels
+
+''' This should't be necessary
 def solveOneStepWithBFS(self):
 
     
@@ -1447,6 +1458,7 @@ def solveOneStepWithBFS(self):
 
     if (self.isGoalState(stateMovedTo)):
         print ("DONE!")
+'''
 
 def solve():
     '''
@@ -1471,35 +1483,24 @@ def solve():
     assert(isSolved())
     '''
 
-    '''
-    HOPEFULLY OUR FINAL GOAL
+    
 
-    solveOneStepWithBFS(desiredState)   
+    BFS()
     simplify_moves()
     step_moves_list[0] = solution_length
-
-    solveOneStepWithBFS(desiredState)
-    simplify_moves()
-    step_moves_list[1] = solution_length - step_moves_list[0]
-
-    solveOneStepWithBFS(desiredState)
-    simplify_moves()
-    step_moves_list[2] = solution_length - step_moves_list[1] - step_moves_list[0]
-
-    solveOneStepWithBFS(desiredState)
-    simplify_moves()
-    step_moves_list[3] = solution_length - step_moves_list[2] - step_moves_list[1] - step_moves_list[0]
-
     assert(isSolved())
 
     '''
-    desiredState = make_cube()
-
-    solveOneStepWithBFS(desiredState)
+    DFS()
     simplify_moves()
     step_moves_list[0] = solution_length
-
     assert(isSolved())
+
+    A*()
+    simplify_moves()
+    step_moves_list[0] = solution_length
+    assert(isSolved())
+    '''
 
     
 
