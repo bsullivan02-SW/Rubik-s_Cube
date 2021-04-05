@@ -66,6 +66,7 @@ def print_cube():
 '''
 THIS IS OUR GROUP'S CODE
 '''
+'''
 class State:
     def __innit__(self, UF, FF, RF, LF, DF, BF):
         self.UF = UF
@@ -77,7 +78,7 @@ class State:
 
     def isEqual(self, currentState):
         
-        '''
+        
         What we need to do is set up both cubes using the "setup" function to face the same way. Then we can check face
         equality without worrying about 6x the number of possible states. Afterwards, we can undo the setup, exactly the way he deals
         with making moves. What I'm wondering now is we can only call setup() on the cube a. There is no parameter to specifiy "which cube".
@@ -88,7 +89,7 @@ class State:
         3. We'll probably have to edit either our code or his for this. Maybe we can make our currentState a cube and make his code
            specify which cube to setup.
         I feel like the easiest thing to do would be to setup a to face the same way as currentState, but how do we find that?
-        '''
+        
 
         setup("l")
 
@@ -124,7 +125,7 @@ class State:
                     return isEqual
         
         return True
-            
+'''   
 
 
 
@@ -1362,7 +1363,7 @@ def isSolved():
     You do not need to change anything in this class, ever.
     """
 
-def getStartState(self):
+def getStartState():
     """
     Returns the start state for the search problem.
     """
@@ -1371,7 +1372,7 @@ def getStartState(self):
 
     return currentCube
 
-def isGoalState(self, state):
+def isGoalState(state):
     """
         state: Search state
     Returns True if and only if the state is a valid goal state.
@@ -1382,7 +1383,7 @@ def isGoalState(self, state):
         isgState = True
     return isgState
 
-def getSuccessors(self, state):
+def getSuccessors(state):
 
     '''
     4/3/2021 7:32 PM: latest session (Tianna/Andres)
@@ -1398,19 +1399,21 @@ def getSuccessors(self, state):
     """
     successors = []
     
-    for move in possibleMoves:
-        #succState = state after the move is applied to the move 
-        successors.append(succState)
+    for currentMove in possibleMoves:
+        saveA = a
+        move(currentMove)
+        successors.append(a)
+        a = saveA
     return successors #return a list of successsors (states)
 
 
 # this if for only one move
-def getMove(self, state):
+def getMove(tate):
     themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
     bestMove = ""
     for mv in moves_list:
         succState =  move(mv) # state after the move is applied to the move
-        if self.isGoalState(succState): # true (succState is the goal state)
+        if isGoalState(succState): # true (succState is the goal state)
             bestMove = mv # this is the move that got us to the goal state
             break
     return bestMove
@@ -1428,6 +1431,7 @@ over to this repository and incorporate my state representation we might be able
 
 '''
 
+'''
 def graphSearch(frontier, problem):
     explored = set() #Initialize explored to be empty
     while(not frontier.isEmpty()): #While the frontier is not empty
@@ -1441,13 +1445,29 @@ def graphSearch(frontier, problem):
                 successors = problem.getSuccessors(nextNode) # get successors
                 for (state, action, costOfAction) in successors :
                     frontier.push((state, actions + [action], cost + costOfAction))
+'''
+
+def graphSearch(frontier):
+    explored = set() #Initialize explored to be empty
+    while(not frontier.isEmpty()): #While the frontier is not empty
+        (nextNode, cost) = frontier.pop() #Remove a leaf node from the frontier
+        t = tuple(nextNode)
+        if t not in explored:
+            if(isGoalState(nextNode)): #If the leaf node contains a goal state
+                explored.add(nextNode) #add the goal state onto explored
+                return 0 #Return the solution
+            else: #The leaf node is not a goal state 
+                explored.add(nextNode) #add the leaf node onto explored
+                successors = getSuccessors(nextNode) # get successors
+                for (state, costOfAction) in successors :
+                    frontier.push((state, cost + costOfAction))
                    
     return print('Failure!') #If the frontier is empty return failure
 
-def BFS(problem):    
+def BFS():    
     frontier = util.Queue()
-    frontier.push((problem.getStartState(), moves_list, 0))
-    return graphSearch(frontier, problem)
+    frontier.push((getStartState(), 0))
+    return graphSearch(frontier)
 # this is only for one move scrambels
 
 ''' This should't be necessary
