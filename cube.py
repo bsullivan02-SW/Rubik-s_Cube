@@ -18,6 +18,8 @@ last_scramble = []
 f2l_list = []
 step_moves_list = []
 solution_length = 0
+possibleMoves = ["u","u2","ui","f","f2","fi","r","r2","ri","l","l2","li","b","b2","bi","d","d2","di","x","x2","xi","y","y2","yi","z","z2",
+"zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
 
 #creates a 3d list representing a solved cube
 def make_cube():
@@ -306,7 +308,7 @@ def move(mv):
         move("F"); move("F"); move("F")
     elif mv == "r":
         setup("R"); U(); undo("R")
-    elif mv == "r":
+    elif mv == "r2":
         move("R"); move("R")
     elif mv == "ri":
         move("R"); move("R"); move("R")
@@ -339,7 +341,7 @@ def move(mv):
     elif mv == "y2":
         move("Y"); move("Y")
     elif mv == "yi":
-        move("Y"); move("Y"); move("Y")  #this is like a reverse y but is never used (basicly a y3) we'll say this as one move. You can use this but to solve the cube it doesnt use it
+        move("Y"); move("Y"); move("Y")
     elif mv == "z":
         rotate("Z")
     elif mv == "z2":
@@ -1396,7 +1398,7 @@ def getSuccessors(self, state):
     """
     successors = []
     
-    for move in moves_list:
+    for move in possibleMoves:
         #succState = state after the move is applied to the move 
         successors.append(succState)
     return successors #return a list of successsors (states)
