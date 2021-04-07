@@ -52,7 +52,7 @@ def make_cube():
                 ['B', 'B', 'B']]] #back/blue
 
 a = make_cube()
-print ("make cube" , a )
+#print ("make cube" , a )
 
 #prints a string representation of the cube to the interpreter
 def print_cube():
