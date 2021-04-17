@@ -554,8 +554,6 @@ def scramble(moves):     # we can change this to whatever we want but it dosent 
                 move(thisMove)
                 last_scramble.append(thisMove)
             prevMove = thisMove
-    
-
 
 def isSolved():
     uside = a[0][0][0] == a[0][0][1] == a[0][0][2] == a[0][1][0] == a[0][1][1] == a[0][1][2] == a[0][2][0] == a[0][2][1] == a[0][2][2]
@@ -619,7 +617,7 @@ def getSuccessors(state):
         a = saveA
     return successors #return a list of successsors (states)
 
-
+'''
 # this if for only one move
 def getMove(tate):
     themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
@@ -630,6 +628,7 @@ def getMove(tate):
             bestMove = mv # this is the move that got us to the goal state
             break
     return bestMove
+    '''
 
 
 
@@ -683,24 +682,12 @@ def BFS():
     return graphSearch(frontier)
 # this is only for one move scrambels
 
-''' This should't be necessary
-def solveOneStepWithBFS(self):
-
-    
-    currenState = self.getStartState()
-    move = self.get_move(currenState)
-    stateMovedTo = currenState.move(move)
-
-    if (self.isGoalState(stateMovedTo)):
-        print ("DONE!")
-'''
-
 def solve():
+    
     '''
-
     ORIGINAL SOLVE CODE
-    '''
-    '''
+    
+    
     cross()
     simplify_moves()
     step_moves_list[0] = solution_length
