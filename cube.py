@@ -3,8 +3,10 @@ import tkinter as tk
 import copy, webbrowser, os
 from tkinter import *
 import util
+import eightpuzzle
+import search
 
-#
+
 #This is the Cube Solver
 #This version contains a GUI
 #Last Edited on: 12/5/2014
@@ -1363,48 +1365,7 @@ def isSolved():
     You do not need to change anything in this class, ever.
     """
 
-def getStartState():
-    """
-    Returns the start state for the search problem.
-    """
-    
-    currentCube = a
 
-    return currentCube
-
-def isGoalState(state):
-    """
-        state: Search state
-    Returns True if and only if the state is a valid goal state.
-    """
-    isgState = False
-    goalState = make_cube()
-    if state == goalState:
-        isgState = True
-    return isgState
-
-def getSuccessors(state):
-
-    '''
-    4/3/2021 7:32 PM: latest session (Tianna/Andres)
-    If we get this to work with the code we may be able to get it to solve. Hopefully.
-    '''
-
-    """
-        state: Search state
-    For a given state, this should return a list of triples, (successor,
-    action, stepCost), where 'successor' is a successor to the current
-    state, 'action' is the action required to get there, and 'stepCost' is
-    the incremental cost of expanding to that successor.
-    """
-    successors = []
-    
-    for currentMove in possibleMoves:
-        saveA = a
-        move(currentMove)
-        successors.append(a)
-        a = saveA
-    return successors #return a list of successsors (states)
 
 
 # this if for only one move
@@ -1447,22 +1408,7 @@ def graphSearch(frontier, problem):
                     frontier.push((state, actions + [action], cost + costOfAction))
 '''
 
-def graphSearch(frontier):
-    explored = set() #Initialize explored to be empty
-    while(not frontier.isEmpty()): #While the frontier is not empty
-        (nextNode, cost) = frontier.pop() #Remove a leaf node from the frontier
-        t = tuple(nextNode)
-        if t not in explored:
-            if(isGoalState(nextNode)): #If the leaf node contains a goal state
-                explored.add(nextNode) #add the goal state onto explored
-                return 0 #Return the solution
-            else: #The leaf node is not a goal state 
-                explored.add(nextNode) #add the leaf node onto explored
-                successors = getSuccessors(nextNode) # get successors
-                for (state, costOfAction) in successors :
-                    frontier.push((state, cost + costOfAction))
-                   
-    return print('Failure!') #If the frontier is empty return failure
+
 
 def BFS():    
     frontier = util.Queue()
