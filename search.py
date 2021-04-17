@@ -27,30 +27,48 @@ class SearchProblem:
     You do not need to change anything in this class, ever.
     """
 
-    def getStartState(self):
-        """
-        Returns the start state for the search problem.
-        """
-        util.raiseNotDefined()
+    def getStartState():
+    """
+    Returns the start state for the search problem.
+    """
+    
+    currentCube = a
 
-    def isGoalState(self, state):
-        """
-          state: Search state
+    return currentCube
 
+    def isGoalState(state):
+        """
+        state: Search state
         Returns True if and only if the state is a valid goal state.
         """
-        util.raiseNotDefined()
+        isgState = False
+        goalState = make_cube()
+        if state == goalState:
+            isgState = True
+        return isgState
 
-    def getSuccessors(self, state):
+    def getSuccessors(state):
+
+        '''
+        4/3/2021 7:32 PM: latest session (Tianna/Andres)
+        If we get this to work with the code we may be able to get it to solve. Hopefully.
+        '''
+
         """
-          state: Search state
-
+        state: Search state
         For a given state, this should return a list of triples, (successor,
         action, stepCost), where 'successor' is a successor to the current
         state, 'action' is the action required to get there, and 'stepCost' is
         the incremental cost of expanding to that successor.
         """
-        util.raiseNotDefined()
+        successors = []
+        
+        for currentMove in possibleMoves:
+            saveA = a
+            move(currentMove)
+            successors.append(a)
+            a = saveA
+        return successors #return a list of successsors (states)
 
     def getCostOfActions(self, actions):
         """
@@ -61,22 +79,22 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-def graphSearch(problem , frontier, heuristic):  ## frontier is a stack of tuples
-    explored = set()
-    while not frontier.isEmpty():
-        leaf = frontier.pop()
-        if (not leaf[0] in explored):
-            explored.add(leaf[0])   ## if you have been at leaf[0] then you wont go back to it
-            if (problem.isGoalState(leaf[0])):
-                return leaf[1]  ## leaf is a tuple 
-        
-            nodes = problem.getSuccessors(leaf[0])
-            for node in nodes:
-              ## .contains basicly
-                newList = leaf[1].copy()
-                newList.append(node[1]) 
-                newInteger = leaf[2]+node[2]+heuristic(node[0], problem) - heuristic(leaf[0], problem)
-                frontier.push((node[0],newList, newInteger))
+def graphSearch(frontier):
+    explored = set() #Initialize explored to be empty
+    while(not frontier.isEmpty()): #While the frontier is not empty
+        (nextNode, cost) = frontier.pop() #Remove a leaf node from the frontier
+        t = tuple(nextNode)
+        if t not in explored:
+            if(isGoalState(nextNode)): #If the leaf node contains a goal state
+                explored.add(nextNode) #add the goal state onto explored
+                return 0 #Return the solution
+            else: #The leaf node is not a goal state 
+                explored.add(nextNode) #add the leaf node onto explored
+                successors = getSuccessors(nextNode) # get successors
+                for (state, costOfAction) in successors :
+                    frontier.push((state, cost + costOfAction))
+                   
+    return print('Failure!') #If the frontier is empty return failure
                 
 
             
