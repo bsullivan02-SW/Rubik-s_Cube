@@ -4,7 +4,7 @@ import copy, webbrowser, os
 from tkinter import *
 import util
 
-
+#
 #This is the Cube Solver
 #This version contains a GUI
 #Last Edited on: 12/5/2014
