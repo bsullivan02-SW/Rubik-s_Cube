@@ -3,10 +3,8 @@ import tkinter as tk
 import copy, webbrowser, os
 from tkinter import *
 import util
-import eightpuzzle
-import search
 
-
+#
 #This is the Cube Solver
 #This version contains a GUI
 #Last Edited on: 12/5/2014
@@ -64,6 +62,73 @@ def print_cube():
     print(str(a[3][2])+' '+str(a[0][2])+' '+str(a[2][2]))
     print('\t\t'+str(a[1][0])+'\n\t\t'+str(a[1][1])+'\n\t\t'+str(a[1][2]))
     print('\t\t'+str(a[4][0])+'\n\t\t'+str(a[4][1])+'\n\t\t'+str(a[4][2]))
+
+'''
+THIS IS OUR GROUP'S CODE
+'''
+'''
+class State:
+    def __innit__(self, UF, FF, RF, LF, DF, BF):
+        self.UF = UF
+        self.FF = FF
+        self.RF = RF
+        self.LF = LF
+        self.DF = DF
+        self.BF = BF
+
+    def isEqual(self, currentState):
+        
+        
+        What we need to do is set up both cubes using the "setup" function to face the same way. Then we can check face
+        equality without worrying about 6x the number of possible states. Afterwards, we can undo the setup, exactly the way he deals
+        with making moves. What I'm wondering now is we can only call setup() on the cube a. There is no parameter to specifiy "which cube".
+        Furthermore, the "currentState" we pass here is not a cube, just a "State". We have to find some way to face them both the same way:
+        1. Can make a match the orientation of currentState (how do we find that?)
+        2. Can copy a into a temp cube, transfer currentState into a and deal with all the setup exclusively in a
+           (I don't think there's even a way to transfer or manually specify what a cube is)
+        3. We'll probably have to edit either our code or his for this. Maybe we can make our currentState a cube and make his code
+           specify which cube to setup.
+        I feel like the easiest thing to do would be to setup a to face the same way as currentState, but how do we find that?
+        
+
+        setup("l")
+
+        isEqual = False
+        for currentRow in self.UF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.FF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+        
+        for currentRow in self.RF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.LF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.DF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+
+        for currentRow in self.BF:
+            for currentColumn in currentRow:
+                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
+                    return isEqual
+        
+        return True
+'''   
+
+
+
 
 #simplifies the list of moves and returns a string representation of the moves
 def get_moves():
@@ -490,794 +555,7 @@ def scramble(moves):     # we can change this to whatever we want but it dosent 
                 last_scramble.append(thisMove)
             prevMove = thisMove
     
-#Solves the top cross as part of the OLL step
-def topCross():
-    # if all the edges are all equal to eachother (all being white)
-    if a[0][0][1] == a[0][1][0] == a[0][1][2] == a[0][2][1]:
-        #print("Cross already done, step skipped")
-        return
-	#If this is true, we have our cross and we can go onto the next step
-    else:
-        while a[0][0][1] != "W" or a[0][1][0] != "W" or a[0][1][2] != "W" or a[0][2][1] != "W":
-            if a[0][1][0] == a[0][1][2]:
-                    #if we have a horizontal line Just do alg
-                    m("F R U Ri Ui Fi")
-                    break #breaking w/o having to recheck while conditions again, this will give us a cross
-            elif a[0][0][1] == a[0][2][1]:
-                    # if we have a vertical line, do a U then alg
-                    m("U F R U Ri Ui Fi")
-                    break
-            elif a[0][0][1] != "W" and a[0][1][0] != "W" and a[0][1][2] != "W" and a[0][2][1] != "W":
-                    #This would mean we have a dot case, so perform
-                    m("F U R Ui Ri Fi U F R U Ri Ui Fi")
-                    break
-            elif a[0][1][2] == a[0][2][1] or a[0][0][1] == a[0][1][0]:
-                    # If we have an L case in the top left or the bottom right, will give us a line
-                    m("F R U Ri Ui Fi")
-            else:
-                    #This is we dont have a line, dot, cross, or L in top left or bottom right
-                    m("U")
-                    
-#returns True if the top is solved
-def isTopSolved():
-    #determines if the top of the cube is solved.
-    if a[0][0][0] == a[0][0][1] == a[0][0][2] == a[0][1][0] == a[0][1][1] == a[0][1][2] == a[0][2][0] == a[0][2][1] == a[0][2][2]:
-        return True
-    else:
-        return False			
 
-#puts a single edge piece in the proper location for the cross
-#Assumes the cross is formed on the bottom and is the yellow face
-#Checks all edges in front/up face, then back-right/left if needed
-def putCrossEdge():
-    global moves_list
-    for i in range(3):
-        if i == 1:
-            m("Ri U R F2")  #bring out back-right edge
-        elif i == 2:
-            m("L Ui Li F2") #bring out back-left edge
-        for j in range(4):
-            for k in range(4):
-                if "Y" in [a[4][0][1], a[1][2][1]]:
-                    return
-                m("F")
-            m("U")
-
-#Performs the first step of the solution: the cross
-def cross():
-    for i in range(4):
-        putCrossEdge()
-        assert "Y" in [a[4][0][1], a[1][2][1]]
-        if a[1][2][1] == "Y":
-            m("Fi R U Ri F2")   #orient if necessary
-        m("Di")
-
-    #permute to correct face: move down face until 2 are lined up,
-    #then swap the other 2 if they need to be swapped
-    condition = False
-    while not condition:
-        fSame = a[1][1][1] == a[1][2][1]
-        rSame = a[2][1][1] == a[2][1][2]
-        bSame = a[5][1][1] == a[5][0][1]
-        lSame = a[3][1][1] == a[3][1][0]
-        condition = (fSame, rSame, bSame, lSame).count(True) >= 2
-        if not condition:
-            m("D")
-    if (fSame, rSame, bSame, lSame).count(True) == 4:
-        return
-    assert (fSame, rSame, bSame, lSame).count(True) == 2
-    if not fSame and not bSame:
-        m("F2 U2 B2 U2 F2") #swap front-back
-    elif not rSame and not lSame:
-        m("R2 U2 L2 U2 R2") #swap right-left
-    elif not fSame and not rSame:
-        m("F2 Ui R2 U F2") #swap front-right
-    elif not rSame and not bSame:
-        m("R2 Ui B2 U R2") #swap right-back
-    elif not bSame and not lSame:
-        m("B2 Ui L2 U B2") #swap back-left
-    elif not lSame and not fSame:
-        m("L2 Ui F2 U L2") #swap left-front
-    fSame = a[1][1][1] == a[1][2][1]
-    rSame = a[2][1][1] == a[2][1][2]
-    bSame = a[5][1][1] == a[5][0][1]
-    lSame = a[3][1][1] == a[3][1][0]
-    assert all([fSame, rSame, bSame, lSame])
-
-#This is uses all the f2l algs to solve all the cases possible
-def solveFrontSlot():
-    #This will be F2L, with all 42 cases
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    dmid = a[4][1][1]
-    #corner orientations if in U layer, first letter means the direction that the color is facing
-    fCorU = a[1][0][2] == dmid and a[0][2][2] == fmid and a[2][2][0] == rmid
-    rCorU = a[2][2][0] == dmid and a[1][0][2] == fmid and a[0][2][2] == rmid
-    uCorU = a[0][2][2] == dmid and a[2][2][0] == fmid and a[1][0][2] == rmid
-    #Corner orientations for correct location in D layer
-    fCorD = a[1][2][2] == dmid and a[2][2][2] == fmid and a[4][0][2] == rmid
-    rCorD = a[2][2][2] == dmid and a[4][0][2] == fmid and a[1][2][2] == rmid
-    dCorD = a[4][0][2] == dmid and a[1][2][2] == fmid and a[2][2][2] == rmid #This is solved spot
-    #edge orientations on U layer, normal or flipped version based on F face
-    norEdgeFU = a[1][0][1] == fmid and a[0][2][1] == rmid
-    norEdgeLU = a[3][1][2] == fmid and a[0][1][0] == rmid
-    norEdgeBU = a[5][2][1] == fmid and a[0][0][1] == rmid
-    norEdgeRU = a[2][1][0] == fmid and a[0][1][2] == rmid
-    norEdgeAny = norEdgeFU or norEdgeLU or norEdgeBU or norEdgeRU
-    flipEdgeFU = a[0][2][1] == fmid and a[1][0][1] == rmid
-    flipEdgeLU = a[0][1][0] == fmid and a[3][1][2] == rmid
-    flipEdgeBU = a[0][0][1] == fmid and a[5][2][1] == rmid
-    flipEdgeRU = a[0][1][2] == fmid and a[2][1][0] == rmid
-    flipEdgeAny = flipEdgeFU or flipEdgeLU or flipEdgeBU or flipEdgeRU
-    #edge orientations for normal or flipped insertion into slot
-    norEdgeInsert = a[1][1][2] == fmid and a[2][2][1] == rmid #This is solved spot
-    flipEdgeInsert = a[2][2][1] == fmid and a[1][1][2] == rmid
-    #these are for if the back right or front left slots are open or not
-    backRight = a[4][2][2] == dmid and a[5][1][2] == a[5][0][2] == a[5][1][1] and a[2][0][1] == a[2][0][2] == rmid
-    frontLeft = a[4][0][0] == dmid and a[1][1][0] == a[1][2][0] == fmid and a[3][2][0] == a[3][2][1] == a[3][1][1]
-    
-    if dCorD and norEdgeInsert: 
-        return
-    #Easy Cases
-    elif fCorU and flipEdgeRU: #Case 1
-        m("U R Ui Ri")
-    elif rCorU and norEdgeFU: #Case 2
-        m("F Ri Fi R")
-    elif fCorU and norEdgeLU: #Case 3
-        m("Fi Ui F")
-    elif rCorU and flipEdgeBU: #Case 4
-        m("R U Ri")
-    #Reposition Edge
-    elif fCorU and flipEdgeBU: #Case 5
-        m("F2 Li Ui L U F2")
-    elif rCorU and norEdgeLU: #Case 6
-        m("R2 B U Bi Ui R2")
-    elif fCorU and flipEdgeLU: #Case 7
-        m("Ui R U2 Ri U2 R Ui Ri")
-    elif rCorU and norEdgeBU: #Case 8
-        m("U Fi U2 F Ui F Ri Fi R")
-    # Reposition edge and Corner Flip
-    elif fCorU and norEdgeBU: #Case 9
-        m("Ui R Ui Ri U Fi Ui F")
-    elif rCorU and flipEdgeLU: #Case 10
-        if not backRight:
-            m("Ri U R2 U Ri")
-        else:
-            m("Ui R U Ri U R U Ri")
-    elif fCorU and norEdgeRU: #Case 11
-        m("Ui R U2 Ri U Fi Ui F")
-    elif rCorU and flipEdgeFU: # Case 12
-        if not backRight:
-            m("Ri U2 R2 U Ri")
-        else:
-            m("Ri U2 R2 U R2 U R")
-    elif fCorU and norEdgeFU: #Case 13
-        if not backRight:
-            m("Ri U R Fi Ui F")
-        else:
-            m("U Fi U F Ui Fi Ui F")
-    elif rCorU and flipEdgeRU: #Case 14
-        m("Ui R Ui Ri U R U Ri")
-    # Split Pair by Going Over
-    elif fCorU and flipEdgeFU: #Case 15
-        if not backRight:
-            m("Ui Ri U R Ui R U Ri")
-        elif not frontLeft:
-            m("U R Ui Ri D R Ui Ri Di")
-        else:
-            m("U Ri F R Fi U R U Ri")
-    elif rCorU and norEdgeRU: # Case 16
-        m("R Ui Ri U2 Fi Ui F")
-    elif uCorU and flipEdgeRU: #Case 17
-        m("R U2 Ri Ui R U Ri")
-    elif uCorU and norEdgeFU: # Case 18
-        m("Fi U2 F U Fi Ui F")
-    # Pair made on side
-    elif uCorU and flipEdgeBU: #Case 19
-        m("U R U2 R2 F R Fi")
-    elif uCorU and norEdgeLU: #Case 20
-        m("Ui Fi U2 F2 Ri Fi R")
-    elif uCorU and flipEdgeLU: #Case 21
-        m("R B U2 Bi Ri")
-    elif uCorU and norEdgeBU: #Case 22
-        m("Fi Li U2 L F")
-    #Weird Cases
-    elif uCorU and flipEdgeFU: #Case 23
-        m("U2 R2 U2 Ri Ui R Ui R2")
-    elif uCorU and norEdgeRU: #Case 24
-        m("U Fi Li U L F R U Ri")
-    #Corner in Place, edge in the U face (All these cases also have set-up moves in case the edge is in the wrong orientation
-    elif dCorD and flipEdgeAny: #Case 25
-        if flipEdgeBU:
-            m("U") #set-up move
-        elif flipEdgeLU:
-            m("U2") #set-up move
-        elif flipEdgeFU:
-            m("Ui") #set-up move
-        if not backRight:
-            m("R2 Ui Ri U R2")
-        else:
-            m("Ri Fi R U R Ui Ri F")
-    elif dCorD and norEdgeAny: #Case 26
-        if norEdgeRU:
-            m("U") #set-up move
-        elif norEdgeBU:
-            m("U2") #set-up move
-        elif norEdgeLU:
-            m("Ui") #set-up move
-        m("U R Ui Ri F Ri Fi R")
-    elif fCorD and flipEdgeAny: #Case 27
-        if flipEdgeBU:
-            m("U") #set-up move
-        elif flipEdgeLU:
-            m("U2") #set-up move
-        elif flipEdgeFU:
-            m("Ui") #set-up move
-        m("R Ui Ri U R Ui Ri")
-    elif rCorD and norEdgeAny: #Case 28
-        if norEdgeRU:
-            m("U") #set-up move
-        elif norEdgeBU:
-            m("U2") #set-up move
-        elif norEdgeLU:
-            m("Ui") #set-up move
-        m("R U Ri Ui F Ri Fi R")
-    elif fCorD and norEdgeAny: #Case 29
-        if norEdgeRU:
-            m("U") #set-up move
-        elif norEdgeBU:
-            m("U2") #set-up move
-        elif norEdgeLU:
-            m("Ui") #set-up move
-        m("U2 R Ui Ri Fi Ui F")
-    elif rCorD and flipEdgeAny: #Case 30
-        if flipEdgeBU:
-            m("U") #set-up move
-        elif flipEdgeLU:
-            m("U2") #set-up move
-        elif flipEdgeFU:
-            m("Ui") #set-up move
-        m("R U Ri Ui R U Ri")
-    #Edge in place, corner in U Face
-    elif uCorU and flipEdgeInsert: # Case 31
-        m("R U2 Ri Ui F Ri Fi R")
-    elif uCorU and norEdgeInsert: # Case 32
-        m("R2 U R2 U R2 U2 R2")
-    elif fCorU and norEdgeInsert: # Case 33
-        m("Ui R Ui Ri U2 R Ui Ri")
-    elif rCorU and norEdgeInsert: # Case 34
-        m("Ui R U2 Ri U R U Ri")
-    elif fCorU and flipEdgeInsert: # Case 35
-        m("U2 R Ui Ri Ui Fi Ui F")
-    elif rCorU and flipEdgeInsert: # Case 36
-        m("U Fi Ui F Ui R U Ri")
-    #Edge and Corner in place
-    #Case 37 is Lol case, already completed
-    elif dCorD and flipEdgeInsert: #Case 38 (Typical flipped f2l pair case
-        m("R2 U2 F R2 Fi U2 Ri U Ri")
-    elif fCorD and norEdgeInsert: # Case 39
-        m("R2 U2 Ri Ui R Ui Ri U2 Ri")
-    elif rCorD and norEdgeInsert: # Case 40
-        m("R U2 R U Ri U R U2 R2")
-    elif fCorD and flipEdgeInsert: #Case 41
-        m("F2 Li Ui L U F Ui F")
-    elif rCorD and flipEdgeInsert: # Case 42
-        m("R Ui Ri Fi Li U2 L F")
-
-#Returns true if the f2l Corner in FR spot is inserted and oriented correctly
-def f2lCorner():
-    return a[4][0][2] == a[4][1][1] and a[1][2][2] == a[1][1][1] and a[2][2][2] == a[2][1][1] #This is solved spot
-
-#Returns true if the f2l edge in FR spot is inserted and oriented correctly    
-def f2lEdge():
-    return a[1][1][2] == a[1][1][1] and a[2][2][1] == a[2][1][1] #This is solved spot
-
-#Returns true if the f2l edge and corner are properly inserted and orientated in the FR position
-def f2lCorrect():
-    return f2lCorner() and f2lEdge()
-
-# returns if the f2l edge is on the top layer at all
-def f2lEdgeOnTop():
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    dmid = a[4][1][1]
-    #edge orientations on U layer, normal or flipped version based on F face
-    norEdgeFU = a[1][0][1] == fmid and a[0][2][1] == rmid
-    norEdgeLU = a[3][1][2] == fmid and a[0][1][0] == rmid
-    norEdgeBU = a[5][2][1] == fmid and a[0][0][1] == rmid
-    norEdgeRU = a[2][1][0] == fmid and a[0][1][2] == rmid
-    norEdgeAny = norEdgeFU or norEdgeLU or norEdgeBU or norEdgeRU
-    flipEdgeFU = a[0][2][1] == fmid and a[1][0][1] == rmid
-    flipEdgeLU = a[0][1][0] == fmid and a[3][1][2] == rmid
-    flipEdgeBU = a[0][0][1] == fmid and a[5][2][1] == rmid
-    flipEdgeRU = a[0][1][2] == fmid and a[2][1][0] == rmid
-    flipEdgeAny = flipEdgeFU or flipEdgeLU or flipEdgeBU or flipEdgeRU
-    return norEdgeAny or flipEdgeAny
-
-#returns true if the f2l edge is inserted. Can be properly orientated, or flipped.
-def f2lEdgeInserted():
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    #edge orientations for normal or flipped insertion into slot
-    norEdgeInsert = a[1][1][2] == fmid and a[2][2][1] == rmid #This is solved spot
-    flipEdgeInsert = a[2][2][1] == fmid and a[1][1][2] == rmid
-    return norEdgeInsert or flipEdgeInsert
-
-#This is used to determine if the front f2l edge is inserted or not, the parameter is for the requested edge. takes BR, BL, and FL as valid
-def f2lEdgeInserted2(p):
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    #edge orientations for normal or flipped insertion into slot
-    norEdgeInsert = a[1][1][2] == fmid and a[2][2][1] == rmid #This is solved spot
-    flipEdgeInsert = a[2][2][1] == fmid and a[1][1][2] == rmid
-    #Edge orientations in comparison to Front and Right colors
-    BR = (a[5][1][2] == fmid and a[2][0][1] == rmid) or (a[5][1][2] == rmid and a[2][0][1] == fmid)
-    BL = (a[3][0][1] == fmid and a[5][1][0] == rmid) or (a[3][0][1] == rmid and a[5][1][0] == fmid)
-    FL = (a[3][2][1] == fmid and a[1][1][0] == rmid) or (a[3][2][1] == rmid and a[1][1][0] == fmid)
-    
-    if p == "BR":
-        if BR:
-            return True
-        else:
-            return False
-    elif p == "BL":
-        if BL:
-            return True
-        return False
-    elif p == "FL":
-        if FL:
-            return True
-        return False
-    elif p == "FR":
-        if norEdgeInsert or flipEdgeInsert:
-            return True
-    return False
-            
-
-#returns true if f2l corner is inserted, doesn't have to be orientated correctly
-def f2lCornerInserted():
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    dmid = a[4][1][1]
-    #Corner orientations for correct location in D layer
-    fCorD = a[1][2][2] == dmid and a[2][2][2] == fmid and a[4][0][2] == rmid
-    rCorD = a[2][2][2] == dmid and a[4][0][2] == fmid and a[1][2][2] == rmid
-    dCorD = a[4][0][2] == dmid and a[1][2][2] == fmid and a[2][2][2] == rmid #This is solved spot
-    return fCorD or rCorD or dCorD
-
-#Returns true if there is an f2l corner located in the FR orientation
-def f2lFRCor():
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    dmid = a[4][1][1]
-    #corner orientations if in U layer, first letter means the direction that the color is facing
-    fCorU = a[1][0][2] == dmid and a[0][2][2] == fmid and a[2][2][0] == rmid
-    rCorU = a[2][2][0] == dmid and a[1][0][2] == fmid and a[0][2][2] == rmid
-    uCorU = a[0][2][2] == dmid and a[2][2][0] == fmid and a[1][0][2] == rmid
-    return fCorU or rCorU or uCorU
-
-#Returns true if there is an f2l Edge located in the FU position
-def f2lFUEdge():
-    rmid = a[2][1][1]
-    fmid = a[1][1][1]
-    norEdgeFU = a[1][0][1] == fmid and a[0][2][1] == rmid
-    flipEdgeFU = a[0][2][1] == fmid and a[1][0][1] == rmid
-    return norEdgeFU or flipEdgeFU
-
-#returns true if f2l corner is located on the U layer
-def f2lCornerOnTop():
-    wasFound = False
-    for i in range(4): #Does 4 U moves to find the corner
-        if f2lFRCor():
-            wasFound = True
-        m("U")
-    return wasFound
-
-#Will return the loction of the corner that belongs in the FR spot. Either returns BR, BL, FL, or FR.
-def f2lCornerCheck():
-    r = "FR"
-    count = 0
-    while count < 4:
-        if count == 0:
-            if f2lCornerInserted():
-                r = "FR"
-        elif count == 1:
-            if f2lCornerInserted():
-                r = "FL"
-        elif count == 2:
-            if f2lCornerInserted():
-                r = "BL"
-        elif count == 3:
-            if f2lCornerInserted():
-                r = "BR"
-        m("D")
-        count += 1
-    return r
-
-#Will return the loction of the edge that belongs in the FR spot.
-#Either returns BR, BL, FL, or FR.
-def f2lEdgeCheck():
-    if f2lEdgeInserted2("FL"):
-        return "FL"
-    elif f2lEdgeInserted2("BL"):
-        return "BL"
-    elif f2lEdgeInserted2("BR"):
-        return "BR"
-    elif f2lEdgeInserted2("FR"):
-        return "FR"
-    else:
-        raise Exception("f2lEdgeCheck() Exception")
-    
-#This is for the case where the Edge is inserted, but the corner is not
-def f2lEdgeNoCorner():
-    topEdgeTop = a[0][2][1]
-    topEdgeFront = a[1][0][1]
-    rmid = a[2][1][1]
-    bmid = a[5][1][1]
-    lmid = a[3][1][1]
-    fmid = a[1][1][1]
-    #This is for comparing the front edge to other various edges for advanced algs/lookahead
-    BREdge = (topEdgeTop == rmid or topEdgeTop == bmid) and (topEdgeFront == rmid or topEdgeFront == bmid)
-    BLEdge = (topEdgeTop == lmid or topEdgeTop == bmid) and (topEdgeFront == lmid or topEdgeFront == bmid)
-    FLEdge = (topEdgeTop == fmid or topEdgeTop == lmid) and (topEdgeFront == fmid or topEdgeFront == lmid)
-    if f2lCornerOnTop():
-        while True:
-            solveFrontSlot()
-            if f2lCorrect():
-                break
-            m("U")
-    else:
-        if f2lCornerCheck() == "BR":
-            if BREdge:
-                m("Ri Ui R U2")
-            else:
-                m("Ri U R U")
-        elif f2lCornerCheck() == "BL":
-            if BLEdge:
-                m("L U Li U")
-            else:
-                m("L Ui Li U2")
-        elif f2lCornerCheck() == "FL":
-            if FLEdge:
-                m("Li U L Ui")
-            else:
-                m("Li Ui L")
-    solveFrontSlot()
-
-    if not f2lCorrect():
-        raise Exception("Exception found in f2lEdgeNoCorner()")
-    
-    
-#This is the case for if the corner is inserted, but the edge is not
-def f2lCornerNoEdge():
-    topEdgeTop = a[0][2][1]
-    topEdgeFront = a[1][0][1]
-    rmid = a[2][1][1]
-    bmid = a[5][1][1]
-    lmid = a[3][1][1]
-    fmid = a[1][1][1]
-    #This is for comparing the front edge to other various edges for advanced algs/lookahead
-    BREdge = (topEdgeTop == rmid or topEdgeTop == bmid) and (topEdgeFront == rmid or topEdgeFront == bmid)
-    BLEdge = (topEdgeTop == lmid or topEdgeTop == bmid) and (topEdgeFront == lmid or topEdgeFront == bmid)
-    FLEdge = (topEdgeTop == fmid or topEdgeTop == lmid) and (topEdgeFront == fmid or topEdgeFront == lmid)
-    if f2lEdgeOnTop():
-        while True:
-            solveFrontSlot()
-            if f2lCorrect():
-                break
-            m("U")
-    else:
-        if f2lEdgeCheck() == "BR":
-            if BREdge:
-                m("Ri Ui R U2")
-            else:
-                m("Ri U R U")
-        elif f2lEdgeCheck() == "BL":
-            if BLEdge:
-                m("L U Li U")
-            else:
-                m("L Ui Li U2")
-        elif f2lEdgeCheck() == "FL":
-            if FLEdge:
-                m("Li U L Ui")
-            else:
-                m("Li Ui L")
-    solveFrontSlot()
-
-    if not f2lCorrect():
-        raise Exception("Exception found in f2lCornerNoEdge()")
-
-#this is the case for if the corner is on top, and the edge is not. Neither are inserted properly. Edge must be in another slot.
-def f2lCornerTopNoEdge():
-    topEdgeTop = a[0][2][1]
-    topEdgeFront = a[1][0][1]
-    rmid = a[2][1][1]
-    bmid = a[5][1][1]
-    lmid = a[3][1][1]
-    fmid = a[1][1][1]
-    #This is for comparing the front edge to other various edges for advanced algs/lookahead
-    BREdge = (topEdgeTop == rmid or topEdgeTop == bmid) and (topEdgeFront == rmid or topEdgeFront == bmid)
-    BLEdge = (topEdgeTop == lmid or topEdgeTop == bmid) and (topEdgeFront == lmid or topEdgeFront == bmid)
-    FLEdge = (topEdgeTop == fmid or topEdgeTop == lmid) and (topEdgeFront == fmid or topEdgeFront == lmid)
-
-    #Turn the top until the corner on the U face is in the proper position
-    while True:
-        if f2lFRCor():
-            break
-        m("U")
-    #We will be checking additional edges to choose a more fitting alg for the sake of looking ahead
-    if f2lEdgeCheck() == "BR":
-        if BREdge:
-            m("Ri Ui R")
-        else:
-            m("Ri U R")
-    elif f2lEdgeCheck() == "BL":
-        if BLEdge:
-            m("U2 L Ui Li")
-        else:
-            m("L Ui Li U")
-    elif f2lEdgeCheck() == "FL":
-        if FLEdge:
-            m("U2 Li Ui L U2")
-        else:
-            m("Li Ui L U")
-    solveFrontSlot()
-
-    if not f2lCorrect():
-        raise Exception("Exception found in f2lCornerTopNoEdge()")
-
-#This is the case for if the edge is on top, and the corner is not. Neither are inserted properly. Corner must be in another slot.
-#The lookahead for this step is comparing the back edge to the slots, rather than the front one like other cases have
-def f2lEdgeTopNoCorner():
-    BackEdgeTop = a[0][0][1]
-    BackEdgeBack = a[5][2][1]
-    rmid = a[2][1][1]
-    bmid = a[5][1][1]
-    lmid = a[3][1][1]
-    fmid = a[1][1][1]
-    rs1 = BackEdgeTop == rmid or BackEdgeTop == bmid
-    rs2 = BackEdgeBack == rmid or BackEdgeBack == bmid
-    #This is for comparing the back edge to other various edges for advanced algs/lookahead
-    BREdge = rs1 and rs2
-    BLEdge = (BackEdgeTop == lmid or BackEdgeTop == bmid) and (BackEdgeBack == lmid or BackEdgeBack == bmid)
-    FLEdge = (BackEdgeTop == fmid or BackEdgeTop == lmid) and (BackEdgeBack == fmid or BackEdgeBack == lmid)
-
-    #Turn the top until the corner on the U face is in the proper position
-    while True:
-        if f2lFUEdge():
-            break
-        m("U")
-    #We will be checking additional edges to choose a more fitting alg for the sake of looking ahead
-    if f2lCornerCheck() == "BR":
-        if BREdge:
-            m("Ri U R U")
-        else:
-            m("Ui Ri U R U")
-    elif f2lCornerCheck() == "BL":
-        if BLEdge:
-            m("L Ui Li U2")
-        else:
-            m("U2 L U2 Li")
-    elif f2lCornerCheck() == "FL":
-        if FLEdge:
-            m("Li Ui L")
-        else:
-            m("U Li Ui L")
-    solveFrontSlot()
-
-    if not f2lCorrect():
-        raise Exception("Exception found in f2lEdgeTopNoCorner()")
-    
-
-#This is the case for if the edge or corner are not on top, and not inserted properly. They must both be in other slots.
-def f2lNoEdgeOrCorner():
-    #The strategy here is to first find the corner and get it out. I will place it in the FR position where it belongs
-    #I will then check if I have a case, and if we are all solved.
-    #If I don't have it solved at this point, I will have to follow what happens in f2lCornerTopNoEdge()
-
-    BackEdgeTop = a[0][0][1]
-    BackEdgeBack = a[5][2][1]
-    rmid = a[2][1][1]
-    bmid = a[5][1][1]
-    lmid = a[3][1][1]
-    fmid = a[1][1][1]
-    #This is for comparing the back edge to other various edges for advanced algs/lookahead
-    BREdge = (BackEdgeTop == rmid or BackEdgeTop == bmid) and (BackEdgeBack == rmid or BackEdgeBack == bmid)
-    BLEdge = (BackEdgeTop == lmid or BackEdgeTop == bmid) and (BackEdgeBack == lmid or BackEdgeBack == bmid)
-    FLEdge = (BackEdgeTop == fmid or BackEdgeTop == lmid) and (BackEdgeBack == fmid or BackEdgeBack == lmid)
-    
-    #We will be checking additional edges to choose a more fitting alg for the sake of looking ahead
-    if f2lCornerCheck() == "BR":
-        if BREdge:
-            m("Ri U R U")
-        else:
-            m("Ui Ri U R U")
-    elif f2lCornerCheck() == "BL":
-        if BLEdge:
-            m("L Ui Li U2")
-        else:
-            m("U2 L U2 Li")
-    elif f2lCornerCheck() == "FL":
-        if FLEdge:
-            m("Li Ui L")
-        else:
-            m("U Li Ui L")
-    solveFrontSlot()
-
-    if f2lCorrect():
-        return
-    else:
-        f2lCornerTopNoEdge()
-
-    if not f2lCorrect():
-        raise Exception("Exception found in f2lNoEdgeOrCorner()")
-
-#Will return true if the f2l is completed
-def isf2lDone():
-    rside = a[2][0][1] == a[2][0][2] == a[2][1][1] == a[2][1][2] == a[2][2][1] == a[2][2][2]
-    bside = a[5][0][0] == a[5][0][1] == a[5][0][2] == a[5][1][0] == a[5][1][1] == a[5][1][2]
-    lside = a[3][0][0] == a[3][0][1] == a[3][1][0] == a[3][1][1] == a[3][2][0] == a[3][2][1]
-    fside = a[1][1][0] == a[1][1][1] == a[1][1][2] == a[1][2][0] == a[1][2][1] == a[1][2][2]
-    return rside and bside and lside and fside
-
-#f2l will solve the first 2 layers, checks for each case, then does a Y move to check the next
-def f2l():
-    pairsSolved = 0
-    uMoves = 0
-    while pairsSolved < 4:
-        if not f2lCorrect():
-            #while not f2lCorrect():
-            while uMoves < 4: #4 moves before checking rare cases
-                solveFrontSlot()
-                if f2lCorrect():
-                    pairsSolved += 1
-                    f2l_list.append("Normal Case")
-                    break
-                else:
-                    f2l_list.append("Scanning")
-                    uMoves += 1
-                    m("U")
-            if not f2lCorrect():
-                if not f2lCornerInserted() and f2lEdgeInserted():
-                    f2l_list.append("Rare case 1")
-                    f2lEdgeNoCorner()
-                    pairsSolved += 1
-                elif not f2lEdgeInserted() and f2lCornerInserted():
-                    f2l_list.append("Rare case 2")
-                    f2lCornerNoEdge()
-                    pairsSolved += 1
-                #At this point, they can't be inserted, must be in U or other spot
-                elif not f2lEdgeOnTop() and f2lCornerOnTop():
-                    f2l_list.append("Rare Case 3")
-                    f2lCornerTopNoEdge()
-                    pairsSolved += 1
-                elif f2lEdgeOnTop() and not f2lCornerOnTop():
-                    f2l_list.append("Rare Case 4")
-                    f2lEdgeTopNoCorner()
-                    solveFrontSlot()
-                    pairsSolved += 1
-                elif not f2lEdgeOnTop() and not f2lCornerOnTop():
-                    f2l_list.append("Rare Case 5")
-                    f2lNoEdgeOrCorner()
-                    pairsSolved += 1
-                else:
-                    raise Exception("f2l Impossible Case Exception")
-        else:
-            pairsSolved += 1
-        f2l_list.append("We have ")
-        f2l_list.append(str(pairsSolved))
-        uMoves = 0
-        m("Y")
-    assert(isf2lDone())
-
-        
-def fish():
-    return [a[0][0][0], a[0][0][2], a[0][2][0], a[0][2][2]].count(a[0][1][1]) == 1
-
-def sune():
-    m("R U Ri U R U2 Ri")
-
-def antisune():
-    m("R U2 Ri Ui R Ui Ri")
-
-def getfish():
-    for i in range(4):
-        if fish():
-            return
-        sune()
-        if fish():
-            return
-        antisune()
-        m("U")
-    assert fish()
-
-def bOLL():
-    getfish()
-    if fish():
-        while a[0][0][2] != a[0][1][1]:
-            m("U")
-        if a[1][0][0] == a[0][1][1]:
-            antisune()
-        elif a[5][2][0] == a[0][1][1]:
-            m("U2"); sune()
-        else:
-            raise Exception("Something went wrong")
-    else:
-        raise Exception("Fish not set up")
-    assert isTopSolved()
-
-def getCornerState():
-    corner0 = a[1][0][0] == a[1][1][1] and a[3][2][2] == a[3][1][1]
-    corner1 = a[1][0][2] == a[1][1][1] and a[2][2][0] == a[2][1][1]
-    corner2 = a[5][2][2] == a[5][1][1] and a[2][0][0] == a[2][1][1]
-    corner3 = a[5][2][0] == a[5][1][1] and a[3][0][2] == a[3][1][1]
-    return [corner0, corner1, corner2, corner3]
-
-#Does permutation of the top layer corners, orients them properly
-def permuteCorners():
-    for i in range(2):
-        for j in range(4):
-            num = getCornerState().count(True)
-            if num == 4:
-                return
-            if num == 1:
-                index = getCornerState().index(True)
-                for k in range(index):
-                    m("Y")
-                if a[1][0][2] == a[2][1][1]:
-                    m("R2 B2 R F Ri B2 R Fi R")
-                else:
-                    m("Ri F Ri B2 R Fi Ri B2 R2")
-                for f in range(index):
-                    m("Yi")
-                return
-            m("U")
-        m("R2 B2 R F Ri B2 R Fi R")
-
-#Does permutation of the top layer edges, must be H, Z or U perms after orientation
-def permuteEdges():
-    if all(getEdgeState()):
-        return
-    if a[1][0][1] == a[5][1][1] and a[5][2][1] == a[1][1][1]: #H perm
-        m("R2 U2 R U2 R2 U2 R2 U2 R U2 R2")
-    elif a[1][0][1] == a[2][1][1] and a[2][1][0] == a[1][1][1]: #Normal Z perm
-        m("U Ri Ui R Ui R U R Ui Ri U R U R2 Ui Ri U")
-    elif a[1][0][1] == a[3][1][1] and a[3][1][2] == a[1][1][1]: # Not oriented Z perm
-        m("Ri Ui R Ui R U R Ui Ri U R U R2 Ui Ri U2")
-    else:
-        uNum = 0
-        while True:
-            if a[5][2][0] == a[5][2][1] == a[5][2][2]: #solid bar is on back then
-                if a[3][1][2] == a[1][0][0]: #means we have to do counterclockwise cycle
-                    m("R Ui R U R U R Ui Ri Ui R2")
-                    break
-                else:
-                    m("R2 U R U Ri Ui Ri Ui Ri U Ri")
-                    break
-            else:
-                m("U")
-                uNum += 1
-        for x in range(uNum):
-            m("Ui")
-
-def getEdgeState():
-    fEdge = a[1][0][1] == a[1][1][1]
-    rEdge = a[2][1][0] == a[2][1][1]
-    bEdge = a[5][2][1] == a[5][1][1]
-    lEdge = a[3][1][2] == a[3][1][1]
-    return [fEdge, rEdge, bEdge, lEdge]
-        
-def topCorners():
-    permuteCorners()
-    assert all(getCornerState())
-
-def topEdges():
-    permuteEdges()
-    assert all(getEdgeState())
-
-def bPLL():
-    topCorners()
-    topEdges()
 
 def isSolved():
     uside = a[0][0][0] == a[0][0][1] == a[0][0][2] == a[0][1][0] == a[0][1][1] == a[0][1][2] == a[0][2][0] == a[0][2][1] == a[0][2][2]
@@ -1287,6 +565,60 @@ def isSolved():
     dside = a[4][0][0] == a[4][0][1] == a[4][0][2] == a[4][1][0] == a[4][1][1] == a[4][1][2] == a[4][2][0] == a[4][2][1] == a[4][2][2]
     bside = a[5][0][0] == a[5][0][1] == a[5][0][2] == a[5][1][0] == a[5][1][1] == a[5][1][2] == a[5][2][0] == a[5][2][1] == a[5][2][2]
     return uside and fside and rside and lside and dside and bside
+
+# ANDRES, BRADY, TIANNA CODE GOES HERE
+
+
+#class SearchProblem:
+    """
+    This class outlines the structure of a search problem, but doesn't implement
+    any of the methods (in object-oriented terminology: an abstract class).
+    You do not need to change anything in this class, ever.
+    """
+
+def getStartState():
+    """
+    Returns the start state for the search problem.
+    """
+    
+    currentCube = a
+
+    return currentCube
+
+def isGoalState(state):
+    """
+        state: Search state
+    Returns True if and only if the state is a valid goal state.
+    """
+    isgState = False
+    goalState = make_cube()
+    if state == goalState:
+        isgState = True
+    return isgState
+
+def getSuccessors(state):
+
+    '''
+    4/3/2021 7:32 PM: latest session (Tianna/Andres)
+    If we get this to work with the code we may be able to get it to solve. Hopefully.
+    '''
+
+    """
+        state: Search state
+    For a given state, this should return a list of triples, (successor,
+    action, stepCost), where 'successor' is a successor to the current
+    state, 'action' is the action required to get there, and 'stepCost' is
+    the incremental cost of expanding to that successor.
+    """
+    successors = []
+    
+    for currentMove in possibleMoves:
+        saveA = a
+        move(currentMove)
+        successors.append(a)
+        a = saveA
+    return successors #return a list of successsors (states)
+
 
 # this if for only one move
 def getMove(tate):
@@ -1299,11 +631,69 @@ def getMove(tate):
             break
     return bestMove
 
+
+
+
+
+'''
+
+NEXT STEP:
+Make Tianna's BFS code and graphSearch code work with my idea of a rubrik's cube state representation.
+For example, problem isn't defined in this repository. I think if we just copy the problem class
+over to this repository and incorporate my state representation we might be able to straight up make this work.
+
+'''
+
+'''
+def graphSearch(frontier, problem):
+    explored = set() #Initialize explored to be empty
+    while(not frontier.isEmpty()): #While the frontier is not empty
+        (nextNode, actions, cost) = frontier.pop() #Remove a leaf node from the frontier
+        if nextNode not in explored:
+            if(problem.isGoalState(nextNode)): #If the leaf node contains a goal state
+                explored.add(nextNode) #add the goal state onto explored
+                return actions #Return the solution
+            else: #The leaf node is not a goal state 
+                explored.add(nextNode) #add the leaf node onto explored
+                successors = problem.getSuccessors(nextNode) # get successors
+                for (state, action, costOfAction) in successors :
+                    frontier.push((state, actions + [action], cost + costOfAction))
+'''
+
+def graphSearch(frontier):
+    explored = set() #Initialize explored to be empty
+    while(not frontier.isEmpty()): #While the frontier is not empty
+        (nextNode, cost) = frontier.pop() #Remove a leaf node from the frontier
+        t = tuple(nextNode)
+        if t not in explored:
+            if(isGoalState(nextNode)): #If the leaf node contains a goal state
+                explored.add(nextNode) #add the goal state onto explored
+                return 0 #Return the solution
+            else: #The leaf node is not a goal state 
+                explored.add(nextNode) #add the leaf node onto explored
+                successors = getSuccessors(nextNode) # get successors
+                for (state, costOfAction) in successors :
+                    frontier.push((state, cost + costOfAction))
+                   
+    return print('Failure!') #If the frontier is empty return failure
+
 def BFS():    
     frontier = util.Queue()
     frontier.push((getStartState(), 0))
     return graphSearch(frontier)
 # this is only for one move scrambels
+
+''' This should't be necessary
+def solveOneStepWithBFS(self):
+
+    
+    currenState = self.getStartState()
+    move = self.get_move(currenState)
+    stateMovedTo = currenState.move(move)
+
+    if (self.isGoalState(stateMovedTo)):
+        print ("DONE!")
+'''
 
 def solve():
     '''
