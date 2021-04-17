@@ -65,73 +65,6 @@ def print_cube():
     print('\t\t'+str(a[1][0])+'\n\t\t'+str(a[1][1])+'\n\t\t'+str(a[1][2]))
     print('\t\t'+str(a[4][0])+'\n\t\t'+str(a[4][1])+'\n\t\t'+str(a[4][2]))
 
-'''
-THIS IS OUR GROUP'S CODE
-'''
-'''
-class State:
-    def __innit__(self, UF, FF, RF, LF, DF, BF):
-        self.UF = UF
-        self.FF = FF
-        self.RF = RF
-        self.LF = LF
-        self.DF = DF
-        self.BF = BF
-
-    def isEqual(self, currentState):
-        
-        
-        What we need to do is set up both cubes using the "setup" function to face the same way. Then we can check face
-        equality without worrying about 6x the number of possible states. Afterwards, we can undo the setup, exactly the way he deals
-        with making moves. What I'm wondering now is we can only call setup() on the cube a. There is no parameter to specifiy "which cube".
-        Furthermore, the "currentState" we pass here is not a cube, just a "State". We have to find some way to face them both the same way:
-        1. Can make a match the orientation of currentState (how do we find that?)
-        2. Can copy a into a temp cube, transfer currentState into a and deal with all the setup exclusively in a
-           (I don't think there's even a way to transfer or manually specify what a cube is)
-        3. We'll probably have to edit either our code or his for this. Maybe we can make our currentState a cube and make his code
-           specify which cube to setup.
-        I feel like the easiest thing to do would be to setup a to face the same way as currentState, but how do we find that?
-        
-
-        setup("l")
-
-        isEqual = False
-        for currentRow in self.UF:
-            for currentColumn in currentRow:
-                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
-                    return isEqual
-
-        for currentRow in self.FF:
-            for currentColumn in currentRow:
-                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
-                    return isEqual
-        
-        for currentRow in self.RF:
-            for currentColumn in currentRow:
-                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
-                    return isEqual
-
-        for currentRow in self.LF:
-            for currentColumn in currentRow:
-                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
-                    return isEqual
-
-        for currentRow in self.DF:
-            for currentColumn in currentRow:
-                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
-                    return isEqual
-
-        for currentRow in self.BF:
-            for currentColumn in currentRow:
-                if self.UF[currentRow][currentColumn] != currentState.UF[currentRow][currentColumn]:
-                    return isEqual
-        
-        return True
-'''   
-
-
-
-
 #simplifies the list of moves and returns a string representation of the moves
 def get_moves():
     simplify_moves()
@@ -1355,19 +1288,6 @@ def isSolved():
     bside = a[5][0][0] == a[5][0][1] == a[5][0][2] == a[5][1][0] == a[5][1][1] == a[5][1][2] == a[5][2][0] == a[5][2][1] == a[5][2][2]
     return uside and fside and rside and lside and dside and bside
 
-# ANDRES, BRADY, TIANNA CODE GOES HERE
-
-
-#class SearchProblem:
-    """
-    This class outlines the structure of a search problem, but doesn't implement
-    any of the methods (in object-oriented terminology: an abstract class).
-    You do not need to change anything in this class, ever.
-    """
-
-
-
-
 # this if for only one move
 def getMove(tate):
     themovelist = ["u","u2","ui","f","f2","fi","r","ri","l","l2","li","b","d","d2","di","x","x2","xi","y","y2","yi","z","z2","zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
@@ -1379,54 +1299,11 @@ def getMove(tate):
             break
     return bestMove
 
-
-
-
-
-'''
-
-NEXT STEP:
-Make Tianna's BFS code and graphSearch code work with my idea of a rubrik's cube state representation.
-For example, problem isn't defined in this repository. I think if we just copy the problem class
-over to this repository and incorporate my state representation we might be able to straight up make this work.
-
-'''
-
-'''
-def graphSearch(frontier, problem):
-    explored = set() #Initialize explored to be empty
-    while(not frontier.isEmpty()): #While the frontier is not empty
-        (nextNode, actions, cost) = frontier.pop() #Remove a leaf node from the frontier
-        if nextNode not in explored:
-            if(problem.isGoalState(nextNode)): #If the leaf node contains a goal state
-                explored.add(nextNode) #add the goal state onto explored
-                return actions #Return the solution
-            else: #The leaf node is not a goal state 
-                explored.add(nextNode) #add the leaf node onto explored
-                successors = problem.getSuccessors(nextNode) # get successors
-                for (state, action, costOfAction) in successors :
-                    frontier.push((state, actions + [action], cost + costOfAction))
-'''
-
-
-
 def BFS():    
     frontier = util.Queue()
     frontier.push((getStartState(), 0))
     return graphSearch(frontier)
 # this is only for one move scrambels
-
-''' This should't be necessary
-def solveOneStepWithBFS(self):
-
-    
-    currenState = self.getStartState()
-    move = self.get_move(currenState)
-    stateMovedTo = currenState.move(move)
-
-    if (self.isGoalState(stateMovedTo)):
-        print ("DONE!")
-'''
 
 def solve():
     '''
