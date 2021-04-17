@@ -28,13 +28,13 @@ class SearchProblem:
     """
 
     def getStartState():
-    """
-    Returns the start state for the search problem.
-    """
-    
-    currentCube = a
+        """
+        Returns the start state for the search problem.
+        """
+        
+        currentCube = a
 
-    return currentCube
+        return currentCube
 
     def isGoalState(state):
         """
