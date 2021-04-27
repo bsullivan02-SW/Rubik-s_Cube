@@ -3,6 +3,10 @@ import tkinter as tk
 import copy, webbrowser, os
 from tkinter import *
 
+import eightpuzzle
+import search
+import util
+
 #This is the Cube Solver
 #This version contains a GUI
 #Last Edited on: 12/5/2014
@@ -15,6 +19,8 @@ last_scramble = []
 f2l_list = []
 step_moves_list = []
 solution_length = 0
+possibleMoves = ["u","u2","ui","f","f2","fi","r","r2","ri","l","l2","li","b","b2","bi","d","d2","di","x","x2","xi","y","y2","yi","z","z2",
+"zi","uw","uw2","uwi","m","mi","m2","rw","rwi","rw2","fw","fwi","fw2","lw","lwi","lw2","bw","bwi","bw2","dw","dwi","dw2"]
 
 #creates a 3d list representing a solved cube
 def make_cube():
@@ -487,10 +493,20 @@ def isSolved():
     bside = a[5][0][0] == a[5][0][1] == a[5][0][2] == a[5][1][0] == a[5][1][1] == a[5][1][2] == a[5][2][0] == a[5][2][1] == a[5][2][2]
     return uside and fside and rside and lside and dside and bside
 
+
+SP = search.SearchProblem(a, possibleMoves)
+def BFS():    
+    frontier = util.Queue()
+    frontier.push((SP.getStartState(), 0))
+    return search.graphSearch(frontier, SP)
+
 def solve():
     # dfs untiul solved 
     #call dfs function
     # check if solved after every move DONE
+
+    
+    search.BFS(SP)
     
     assert(isSolved())
 
