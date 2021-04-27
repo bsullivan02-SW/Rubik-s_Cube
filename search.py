@@ -19,6 +19,9 @@ Pacman agents (in searchAgents.py).
 
 import util
 
+from Cube02 import isSolved
+from Cube02 import move
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -27,27 +30,36 @@ class SearchProblem:
     You do not need to change anything in this class, ever.
     """
 
-    def getStartState():
+    def __innit__(self, solvedState, possibleMoves):
+        self.solvedCube = solvedState
+        self.possibleMoves = possibleMoves
+
+    def getStartState(self):
         """
         Returns the start state for the search problem.
         """
         
-        currentCube = a
+        #currentCube = a
 
-        return currentCube
+        return self.solvedCube
 
-    def isGoalState(state):
+    def isGoalState(self, state):
         """
         state: Search state
         Returns True if and only if the state is a valid goal state.
         """
+
+        return(isSolved())
+
+        '''
         isgState = False
-        goalState = make_cube()
+        goalState = self.solvedCube
         if state == goalState:
             isgState = True
         return isgState
+        '''
 
-    def getSuccessors(state):
+    def getSuccessors(self, state):
 
         '''
         4/3/2021 7:32 PM: latest session (Tianna/Andres)
@@ -63,7 +75,7 @@ class SearchProblem:
         """
         successors = []
         
-        for currentMove in possibleMoves:
+        for currentMove in self.possibleMoves:
             saveA = a
             move(currentMove)
             successors.append(a)
@@ -79,18 +91,18 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-def graphSearch(frontier):
+def graphSearch(frontier, SP):
     explored = set() #Initialize explored to be empty
     while(not frontier.isEmpty()): #While the frontier is not empty
         (nextNode, cost) = frontier.pop() #Remove a leaf node from the frontier
         t = tuple(nextNode)
         if t not in explored:
-            if(isGoalState(nextNode)): #If the leaf node contains a goal state
+            if(SP.isGoalState(nextNode)): #If the leaf node contains a goal state
                 explored.add(nextNode) #add the goal state onto explored
                 return 0 #Return the solution
             else: #The leaf node is not a goal state 
                 explored.add(nextNode) #add the leaf node onto explored
-                successors = getSuccessors(nextNode) # get successors
+                successors = SP.getSuccessors(nextNode) # get successors
                 for (state, costOfAction) in successors :
                     frontier.push((state, cost + costOfAction))
                    
@@ -131,7 +143,7 @@ def depthFirstSearch(problem):
     return graphSearch(problem, frontier, nullHeuristic)
 
 
-def breadthFirstSearch(problem):
+def BFS(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     frontier = util.Queue()
@@ -161,6 +173,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     frontier.push((problem.getStartState(), list(), 0))
     return graphSearch(problem, frontier,heuristic)
 
+def test():
+    print("yes")
 
 # Abbreviations
 bfs = breadthFirstSearch
